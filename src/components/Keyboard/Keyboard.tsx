@@ -2,52 +2,39 @@
 
 import { useState } from "react";
 import Button from "../Button/Button";
-import Hiragana from "@/data/alphabet";
+import Hiragana from "@/data/hiragana/hiragana";
+import Katakana from "@/data/katakana/katakana";
 import styles from "./Keyboard.module.css";
-import hiraganaMap from "@/data/hiraganaMap";
+import translator from "@/functions/translator";
 
 export default function Keyboard() {
-  const [hiragana, setHiragana] = useState<string>("");
   let [romaji, setRomaji] = useState<string>("");
+  const [kana, setKana] = useState<string>("");
+  const [selectedKana, setSelectedKana] = useState<string>('hiragana');
 
-  function getHiragana(event): void {
-    const hiragana = event.target.textContent;
-    setHiragana((prevHiragana) => prevHiragana + hiragana);
+  function changeKana(): void {
+    setSelectedKana(selectedKana == 'hiragana' ? 'katakana' : 'hiragana');
   }
 
   function clearInput(): void {
     setRomaji("");
-    setHiragana("");
+    setKana("");
   }
 
-  function convertHiragana(hiragana: string): void {
-    let nextHiragana: string = "";
-    let combinedHiragana: string = "";
+  function getKana(event): void {
+    const kana = event.target.textContent;
+    setKana((prevHiragana) => prevHiragana + kana);
+  }
 
-    for (let i = 0; i < hiragana.length; i++) {
-      let letter: string = hiragana[i];
-
-      if (letter == "し" || letter == "ち") {
-        nextHiragana = hiragana[i + 1];
-
-        if (
-          nextHiragana == "ゃ" ||
-          nextHiragana == "ゅ" ||
-          nextHiragana == "ょ"
-        ) {
-          combinedHiragana = letter += nextHiragana;
-          continue;
-        }
-      }
-
-      setRomaji((romaji += hiraganaMap[combinedHiragana || letter]));
-    }
+  function getRomaji(): void {
+    const result: string = translator({romaji, kana, p: selectedKana})
+    setRomaji(result)
   }
 
   return (
     <>
       <div className={styles.inputBox}>
-        <div className={styles.input}>{hiragana && hiragana}</div>
+        <div className={styles.input}>{kana && kana}</div>
       </div>
 
       <div>
@@ -57,19 +44,33 @@ export default function Keyboard() {
       </div>
 
       <div className={styles.keyboard}>
-        {Hiragana.map((item) => (
-          <Button
-            key={item}
-            text={item}
-            onClick={(event) => getHiragana(event)}
-          />
-        ))}
+        {selectedKana == 'hiragana'
+          ? Hiragana.map((item) => (
+              <Button
+                text={item}
+                key={item}
+                onClick={(event) => getKana(event)}
+              />
+            ))
+          : Katakana.map((item) => (
+              <Button
+                text={item}
+                key={item}
+                onClick={(event) => getKana(event)}
+              />
+            ))}
+
         <button className={styles.clear} onClick={() => clearInput()}>
           Clear
         </button>
+
+        <button className={styles.katakana} onClick={() => changeKana()}>
+          Katakana
+        </button>
+
         <button
           className={styles.convert}
-          onClick={() => convertHiragana(hiragana)}
+          onClick={() => getRomaji()}
         >
           Convert to romaji
         </button>
