@@ -24,18 +24,14 @@ export default function Keyboard() {
     setKana("");
   }
 
-  function dakuten(): void {
-    const result: string = Dakuten[(kana += "“")];
-    setKana("");
-    setKana((prevHiragana) => prevHiragana + result);
-  }
-
-  function handakuten(): void {
-    const regex = /[は, ひ, ふ, へ, ほ]/;
+  function dakuten(event: any): void {
+    const regex =
+      /[か き く け こ さ し す せ そ た ち つ て と は ひ ふ へ ほ]/;
     const regexMatch = kana.match(regex);
+    const symbol = event.target.textContent
 
     if (regexMatch) {
-      const result: string = Dakuten[(regexMatch[0] += "˚")];
+      const result: string = Dakuten[(regexMatch[0] += symbol == "“" ? "“" : "˚")];
       setKana("");
       setKana((prevHiragana) => prevHiragana + kana.replace(regex, result));
     }
@@ -80,11 +76,11 @@ export default function Keyboard() {
               />
             ))}
 
-        <button className={styles.clear} onClick={() => dakuten()}>
+        <button className={styles.clear} onClick={(event) => dakuten(event)}>
           “
         </button>
 
-        <button className={styles.clear} onClick={() => handakuten()}>
+        <button className={styles.clear} onClick={(event) => dakuten(event)}>
           ˚
         </button>
 
