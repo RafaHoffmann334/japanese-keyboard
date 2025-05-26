@@ -2,7 +2,7 @@ interface IDakuten {
   [key: string]: string;
 }
 
-const Dakuten: IDakuten = {
+const DakutenHiragana: IDakuten = {
   "か“": "が",
   "き“": "ぎ",
   "く“": "ぐ",
@@ -30,4 +30,4 @@ const Dakuten: IDakuten = {
   "ほ˚": "ぽ",
 };
 
-export default Dakuten;
+export default DakutenHiragana;

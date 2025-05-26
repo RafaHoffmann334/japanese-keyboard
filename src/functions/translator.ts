@@ -4,24 +4,25 @@ import katakanaMap from "@/data/katakana/katakanaMap";
 interface ITranslator {
   romaji: string;
   kana: string;
-  p: string
+  p: string;
 }
 
 function translator({ romaji, kana, p }: ITranslator): string {
   let nextHiragana: string = "";
-  let combinedHiragana: string = "";
-  let kanaSelected
+  let kanaSelected;
 
-  if (p == 'hiragana') {
+  if (p == "hiragana") {
     kanaSelected = hiraganaMap;
   } else {
-    kanaSelected = katakanaMap
+    kanaSelected = katakanaMap;
   }
 
   for (let i = 0; i < kana.length; i++) {
     let letter: string = kana[i];
 
-    if (letter == "し" || letter == "ち") {
+    if (letter == "ゃ" || letter == "ゅ" || letter == "ょ") continue;
+
+    if (letter == "し" || letter == "ち" || letter == "じ" || letter == "ぢ") {
       nextHiragana = kana[i + 1];
 
       if (
@@ -29,12 +30,11 @@ function translator({ romaji, kana, p }: ITranslator): string {
         nextHiragana == "ゅ" ||
         nextHiragana == "ょ"
       ) {
-        combinedHiragana = letter += nextHiragana;
-        continue;
+        letter += nextHiragana;
       }
     }
 
-    romaji += kanaSelected[combinedHiragana || letter];
+    romaji += kanaSelected[letter];
   }
   return romaji;
 }
