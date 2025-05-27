@@ -1,5 +1,5 @@
 interface IHiragana {
-    [key: string]: string
+  [key: string]: string;
 }
 
 const hiraganaMap: IHiragana = {
@@ -11,7 +11,7 @@ const hiraganaMap: IHiragana = {
   か: "ka",
   が: "ga",
   き: "ki",
-  ぎ: "ji",
+  ぎ: "gi",
   く: "ku",
   ぐ: "gu",
   け: "ke",
@@ -88,4 +88,4 @@ const hiraganaMap: IHiragana = {
   ぢょ: "dyo",
 };
 
-export default hiraganaMap
+export default hiraganaMap;

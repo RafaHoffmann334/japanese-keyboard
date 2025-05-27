@@ -12,10 +12,10 @@ import DakutenHiragana from "@/data/hiragana/dakuten";
 export default function Keyboard() {
   let [romaji, setRomaji] = useState<string>("");
   let [kana, setKana] = useState<string>("");
-  const [selectedKana, setSelectedKana] = useState<string>("hiragana");
+  const [kanaSelected, setKanaSelected] = useState<string>("hiragana");
 
   function changeKana(): void {
-    setSelectedKana(selectedKana == "hiragana" ? "katakana" : "hiragana");
+    setKanaSelected(kanaSelected == "hiragana" ? "katakana" : "hiragana");
     setKana("");
     setRomaji("");
   }
@@ -26,15 +26,25 @@ export default function Keyboard() {
   }
 
   function dakuten(event: any): void {
-    const regex =
-      /[か き く け こ さ し す せ そ た ち つ て と は ひ ふ へ ほ]/;
-    const regexMatch = kana.match(regex);
+    let regexMatch;
+    let dakutenMap;
     const symbol = event.target.textContent;
+
+    const regexHiragana = /[かきくけこさしすせそたちつてとはひふへほ]/;
+    const regexKatakana = /[カキクケコサシスセソタチツテトハヒフヘホ]/;
+
+    if (kanaSelected == "hiragana") {
+      regexMatch = kana.match(regexHiragana);
+      dakutenMap = DakutenHiragana;
+    } else {
+      regexMatch = kana.match(regexKatakana);
+      dakutenMap = DakutenKatakana;
+    }
 
     if (regexMatch) {
       let lastCharacter = regexMatch.input?.substring(kana.length - 1);
       const result: string =
-        DakutenKatakana[(lastCharacter += symbol == "“" ? "“" : "˚")];
+        dakutenMap[(lastCharacter += symbol == "“" ? "“" : "˚")];
       setKana("");
       setKana((prevHiragana) => prevHiragana + kana.replace(/.$/, result));
     }
@@ -46,7 +56,7 @@ export default function Keyboard() {
   }
 
   function getRomaji(): void {
-    const result: string = translator({ romaji, kana, p: selectedKana });
+    const result: string = translator({ romaji, kana, kanaSelected });
     setRomaji(result);
   }
 
@@ -63,7 +73,7 @@ export default function Keyboard() {
       </div>
 
       <div className={styles.keyboard}>
-        {selectedKana == "hiragana"
+        {kanaSelected == "hiragana"
           ? Hiragana.map((item) => (
               <Button
                 text={item}
@@ -92,7 +102,7 @@ export default function Keyboard() {
         </button>
 
         <button className={styles.btn} onClick={() => changeKana()}>
-          {selectedKana}
+          {kanaSelected}
         </button>
 
         <button className={styles.btn} onClick={() => getRomaji()}>

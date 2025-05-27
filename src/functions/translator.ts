@@ -4,37 +4,55 @@ import katakanaMap from "@/data/katakana/katakanaMap";
 interface ITranslator {
   romaji: string;
   kana: string;
-  p: string;
+  kanaSelected: string;
 }
 
-function translator({ romaji, kana, p }: ITranslator): string {
-  let nextHiragana: string = "";
-  let kanaSelected;
+function translator({ romaji, kana, kanaSelected }: ITranslator): string {
+  const smallHiragana = { ゃ: "ゃ", ゅ: "ゅ", ょ: "ょ" };
+  const smallKatakana = { ャ: "ャ", ュ: "ュ", ョ: "ョ" };
 
-  if (p == "hiragana") {
-    kanaSelected = hiraganaMap;
+  let smallKana;
+  let kanaMap;
+  let nextKana: string = "";
+
+  if (kanaSelected == "hiragana") {
+    kanaMap = hiraganaMap;
+    smallKana = smallHiragana;
   } else {
-    kanaSelected = katakanaMap;
+    kanaMap = katakanaMap;
+    smallKana = smallKatakana;
   }
 
   for (let i = 0; i < kana.length; i++) {
     let letter: string = kana[i];
 
-    if (letter == "ゃ" || letter == "ゅ" || letter == "ょ") continue;
+    if (Object.values(smallKana).includes(letter)) continue;
 
-    if (letter == "し" || letter == "ち" || letter == "じ" || letter == "ぢ") {
-      nextHiragana = kana[i + 1];
+    if (
+      letter == "し" ||
+      letter == "ち" ||
+      letter == "じ" ||
+      letter == "ぢ" ||
+      letter == "シ" ||
+      letter == "チ" ||
+      letter == "ジ" ||
+      letter == "ヂ"
+    ) {
+      nextKana = kana[i + 1];
 
       if (
-        nextHiragana == "ゃ" ||
-        nextHiragana == "ゅ" ||
-        nextHiragana == "ょ"
+        nextKana == "ゃ" ||
+        nextKana == "ゅ" ||
+        nextKana == "ょ" ||
+        nextKana == "ャ" ||
+        nextKana == "ュ" ||
+        nextKana == "ョ"
       ) {
-        letter += nextHiragana;
+        letter += nextKana;
       }
     }
 
-    romaji += kanaSelected[letter];
+    romaji += kanaMap[letter];
   }
   return romaji;
 }
