@@ -3,6 +3,8 @@
 }
 
 .input {
+  color: #f5f5f5;
+  font-size: 1.3rem;
   border-radius: .5rem;
   background-color: #0b0b0b;
   min-width: 150px;

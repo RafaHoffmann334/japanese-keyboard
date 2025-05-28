@@ -56,14 +56,14 @@ export default function Keyboard() {
   }
 
   function getRomaji(): void {
-    const result: string = translator({ romaji, kana, kanaSelected });
+    const result: string = translator({ kana, kanaSelected });
     setRomaji(result);
   }
 
   return (
     <>
       <div className={styles.inputBox}>
-        <div className={styles.input}>{kana && kana}</div>
+        <textarea value={kana && kana} className={styles.input}></textarea>
       </div>
 
       <div>
