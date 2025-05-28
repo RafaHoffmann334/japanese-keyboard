@@ -7,20 +7,51 @@ interface ITranslator {
 }
 
 function translator({ kana, kanaSelected }: ITranslator): string {
-  const smallHiragana = new Set(["ゃ", "ゅ", "ょ"]);
-  const smallKatakana = new Set(["ャ", "ュ", "ョ"]);
-  const kanaSet = new Set(["し", "ち", "じ", "ぢ", "シ", "チ", "ジ", "ヂ"]);
+  const smallHiragana: Set<string> = new Set(["ゃ", "ゅ", "ょ"]);
+  const smallKatakana: Set<string> = new Set(["ャ", "ュ", "ョ"]);
+  const hiraganaSet: Set<string> = new Set([
+    "っ",
+    "し",
+    "ち",
+    "き",
+    "り",
+    "み",
+    "に",
+    "ひ",
+    "ぎ",
+    "び",
+    "ぴ",
+    "じ",
+    "ぢ",
+  ]);
+  const katakanaSet: Set<string> = new Set([
+    "シ",
+    "チ",
+    "キ",
+    "リ",
+    "ミ",
+    "ニ",
+    "ヒ",
+    "ギ",
+    "ヂ",
+    "ジ",
+    "ビ",
+    "ピ",
+  ]);
 
   let kanaMap;
+  let kanaSet: Set<string>;
   let smallKana: Set<string>;
   let nextKana: string = "";
   let romajiParts: string[] = [];
 
   if (kanaSelected == "hiragana") {
     kanaMap = hiraganaMap;
+    kanaSet = hiraganaSet;
     smallKana = smallHiragana;
   } else {
     kanaMap = katakanaMap;
+    kanaSet = katakanaSet;
     smallKana = smallKatakana;
   }
 
@@ -31,7 +62,6 @@ function translator({ kana, kanaSelected }: ITranslator): string {
 
     if (kanaSet.has(letter)) {
       nextKana = kana[i + 1];
-
       if (smallKana.has(nextKana)) {
         letter += nextKana;
       }

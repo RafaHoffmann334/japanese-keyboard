@@ -26,7 +26,7 @@ export default function Keyboard() {
   }
 
   function dakuten(event: any): void {
-    let regexMatch;
+    let kanaMatch;
     let dakutenMap;
     const symbol = event.target.textContent;
 
@@ -34,15 +34,15 @@ export default function Keyboard() {
     const regexKatakana = /[カキクケコサシスセソタチツテトハヒフヘホ]/;
 
     if (kanaSelected == "hiragana") {
-      regexMatch = kana.match(regexHiragana);
+      kanaMatch = kana.match(regexHiragana);
       dakutenMap = DakutenHiragana;
     } else {
-      regexMatch = kana.match(regexKatakana);
+      kanaMatch = kana.match(regexKatakana);
       dakutenMap = DakutenKatakana;
     }
 
-    if (regexMatch) {
-      let lastCharacter = regexMatch.input?.substring(kana.length - 1);
+    if (kanaMatch) {
+      let lastCharacter = kanaMatch.input?.substring(kana.length - 1);
       const result: string =
         dakutenMap[(lastCharacter += symbol == "“" ? "“" : "˚")];
       setKana("");
