@@ -10,8 +10,8 @@ import DakutenKatakana from "@/data/katakana/dakuten";
 import DakutenHiragana from "@/data/hiragana/dakuten";
 
 export default function Keyboard() {
-  let [romaji, setRomaji] = useState<string>("");
-  let [kana, setKana] = useState<string>("");
+  const [romaji, setRomaji] = useState<string>("");
+  const [kana, setKana] = useState<string>("");
   const [kanaSelected, setKanaSelected] = useState<string>("hiragana");
 
   function changeKana(): void {
@@ -25,10 +25,10 @@ export default function Keyboard() {
     setKana("");
   }
 
-  function dakuten(event: any): void {
+  function dakuten(event: React.MouseEvent<HTMLButtonElement>): void {
     let kanaMatch;
     let dakutenMap;
-    const symbol = event.target.textContent;
+    const symbol = event.currentTarget.textContent;
 
     const regexHiragana = /[かきくけこさしすせそたちつてとはひふへほ]/;
     const regexKatakana = /[カキクケコサシスセソタチツテトハヒフヘホ]/;
@@ -50,8 +50,8 @@ export default function Keyboard() {
     }
   }
 
-  function getKana(event: any): void {
-    const kana = event.target.textContent;
+  function getKana(event: React.MouseEvent<HTMLButtonElement>): void {
+    const kana = event.currentTarget.textContent;
     setKana((prevHiragana) => prevHiragana + kana);
   }
 

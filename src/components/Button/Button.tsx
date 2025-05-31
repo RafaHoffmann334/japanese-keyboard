@@ -1,6 +1,6 @@
 import styles from "./Button.module.css";
 
-type onClick = (event) => void;
+type onClick = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
 interface IButtonProps {
   text: string;

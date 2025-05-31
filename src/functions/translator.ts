@@ -45,7 +45,7 @@ function translator({ kana, kanaSelected }: ITranslator): string {
   let kanaSet: Set<string>;
   let smallKana: Set<string>;
   let nextKana: string = "";
-  let romajiParts: string[] = [];
+  const romajiParts: string[] = [];
 
   if (kanaSelected == "hiragana") {
     kanaMap = hiraganaMap;
