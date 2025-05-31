@@ -63,7 +63,10 @@ export default function Keyboard() {
   return (
     <>
       <div className={styles.inputBox}>
-        <textarea value={kana && kana} className={styles.input}></textarea>
+        <textarea
+          defaultValue={kana && kana}
+          className={styles.input}
+        ></textarea>
       </div>
 
       <div>

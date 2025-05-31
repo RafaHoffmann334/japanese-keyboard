@@ -9,8 +9,10 @@ interface ITranslator {
 function translator({ kana, kanaSelected }: ITranslator): string {
   const smallHiragana: Set<string> = new Set(["ゃ", "ゅ", "ょ"]);
   const smallKatakana: Set<string> = new Set(["ャ", "ュ", "ョ"]);
+  const smallTsuHiragana: string = "っ";
+  const smallTsuKatakana: string = 'ッ'
+
   const hiraganaSet: Set<string> = new Set([
-    "っ",
     "し",
     "ち",
     "き",
@@ -58,17 +60,25 @@ function translator({ kana, kanaSelected }: ITranslator): string {
   for (let i = 0; i < kana.length; i++) {
     let letter: string = kana[i];
 
-    if (smallKana.has(letter)) continue;
+    if (smallKana.has(letter)) i++;
+
+    if (letter == smallTsuHiragana || letter == smallTsuKatakana) {
+      nextKana = kana[i + 1];
+      letter += nextKana;
+      i++;
+    }
 
     if (kanaSet.has(letter)) {
       nextKana = kana[i + 1];
+
       if (smallKana.has(nextKana)) {
         letter += nextKana;
+        i++;
       }
     }
-
     romajiParts.push(kanaMap[letter]);
   }
+
   return romajiParts.join("");
 }
 
